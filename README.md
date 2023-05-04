@@ -1,2 +1,6 @@
 # money-balance-system
-Java, Springboot, Maven, lombok
+Java JDK 17, Springboot, Maven, Lombok
+
+
+
+
