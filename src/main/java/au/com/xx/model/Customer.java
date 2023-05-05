@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Customer {
 
+    // TODO if we use dabatase, will use this model
     int id;
     String name;
     Double balance;
