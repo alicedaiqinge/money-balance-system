@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -13,11 +15,11 @@ public class BalanceServiceTest {
     private static BalanceService balanceService;
     private int customerIdAlice = 1;
     private int customerIdAlan = 2;
-    private double deposit_30 = 30.00;
-    private double deposit_40 = 40.00;
-    private double withdraw_20 = 20.00;
-    double balanceForAlice = 0.00;
-    double balanceZero = 0.00;
+    private BigDecimal deposit_30 = new BigDecimal(30.00);
+    private BigDecimal deposit_40 = new BigDecimal(40.00);
+    private BigDecimal withdraw_20 = new BigDecimal(20.00);
+    BigDecimal balanceForAlice = BigDecimal.ZERO;
+    BigDecimal balanceZero = BigDecimal.ZERO;
     private String WITHDRAW_ERROR = "Your withdraw money should not exceed balance!";
 
 
@@ -29,20 +31,20 @@ public class BalanceServiceTest {
     @Test
     void test_get_balance_by_customerId() throws Exception {
         clearDepositForAlice();
-        double balanceForAlice = balanceService.getBalanceByCustomerId(customerIdAlice);
+        BigDecimal balanceForAlice = balanceService.getBalanceByCustomerId(customerIdAlice);
         assertThat(balanceZero).isEqualTo(balanceForAlice);
     }
     @Test
     void test_deposit_by_customerId() throws Exception {
         clearDepositForAlice();
         balanceService.depositByCustomerId(customerIdAlice, deposit_30);
-        double balanceForAlice = balanceService.getBalanceByCustomerId(customerIdAlice);
+        BigDecimal balanceForAlice = balanceService.getBalanceByCustomerId(customerIdAlice);
         assertThat(deposit_30).isEqualTo(balanceForAlice);
     }
 
     @Test
     void test_withdraw_by_customerId() throws Exception {
-        double remain_10 = deposit_30 - withdraw_20;
+        BigDecimal remain_10 = deposit_30.subtract(withdraw_20);
         clearDepositForAlice();
         balanceService.depositByCustomerId(customerIdAlice, deposit_30);
         balanceService.withdrawByCustomerId(customerIdAlice, withdraw_20);
@@ -61,12 +63,12 @@ public class BalanceServiceTest {
 
     @Test
     void test_bank_total_balance() throws Exception {
-        double remain_70 = deposit_30 + deposit_40;
+        BigDecimal remain_70 = deposit_30.add(deposit_40);
         clearDepositForAlice();
 
         balanceService.depositByCustomerId(customerIdAlice, deposit_30);
         balanceService.depositByCustomerId(customerIdAlan, deposit_40);
-        double bankBalance = balanceService.getBankTotalBalance();
+        BigDecimal bankBalance = balanceService.getBankTotalBalance();
         assertThat(remain_70).isEqualTo(bankBalance);
 
         balanceService.withdrawByCustomerId(customerIdAlice, deposit_30);

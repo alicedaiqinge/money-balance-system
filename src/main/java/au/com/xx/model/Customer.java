@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,7 +16,7 @@ public class Customer {
     // TODO if we use dabatase, will use this model
     int id;
     String name;
-    Double balance;
+    BigDecimal balance;
 
     String accountNumber;
 }
